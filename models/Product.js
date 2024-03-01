@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+
 const reviewSchema = new Schema({
     userid: {
         type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +15,7 @@ const reviewSchema = new Schema({
     }
 
 });
+
 const productSchema = new Schema({
     name: {
         type: String,
@@ -27,13 +29,6 @@ const productSchema = new Schema({
         type: Number,
         required: true
     },
-    address: {
-        type: String,
-    },
-    phone_no: {
-        type: String,
-        required: true
-    },
     rating: {
         type: Number
     },
@@ -43,8 +38,17 @@ const productSchema = new Schema({
     },
     reviews: {
         type: [reviewSchema]
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    miscellaneous: {
+        type: Object,
     }
 
 
 });
-module.exports = mongoose.model("product", productSchema);
+const Review = mongoose.model("review", reviewSchema);
+const Product = mongoose.model("product", productSchema);
+module.exports = { Review: Review, Product: Product };

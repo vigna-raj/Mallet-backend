@@ -100,9 +100,9 @@ router.put('/api/edituser', authenticateToken, async (req, res) => {
     }
 })
 
-// Route 4 Endpoint for fetching user data POST(Login required)
+// Route 4 Endpoint for fetching user data using POST(Login required)
 
-router.post('/api/fetchdata', authenticateToken, async (req, res) => {
+router.post('/api/fetchuserdata', authenticateToken, async (req, res) => {
     try {
         const user_id = req.data.id;
         const user = await User.findOne({ _id: user_id }).select("-password");

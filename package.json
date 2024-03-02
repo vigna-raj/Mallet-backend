@@ -1,5 +1,5 @@
 {
-  "name": "storoom",
+  "name": "mallet-backend",
   "version": "1.0.0",
   "description": "This is a node backend for ecommerce application. ",
   "main": "index.js",

@@ -17,8 +17,13 @@ const orderSchema = new Schema({
         type: String,
         required: true
     },
+    qty: {
+        type: Number,
+        required: true
+    },
     DOO: {
         type: Date,
+        default: Date.now,
         required: true
     }
 

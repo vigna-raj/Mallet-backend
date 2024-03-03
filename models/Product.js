@@ -12,6 +12,10 @@ const reviewSchema = new Schema({
     },
     ratings: {
         type: Number,
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 
 });
@@ -49,6 +53,4 @@ const productSchema = new Schema({
 
 
 });
-const Review = mongoose.model("review", reviewSchema);
-const Product = mongoose.model("product", productSchema);
-module.exports = { Review: Review, Product: Product };
+module.exports = mongoose.model("product", productSchema);

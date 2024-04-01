@@ -1,9 +1,21 @@
 const express = require('express')
+const multer = require('multer')
 const router = express.Router()
 const Product = require('../models/Product');
 const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 const authenticateToken = require("../middlewares/authenticateToken");
+
+//Configure Filestorage
+const storage = multer.diskStorage({
+    destination: "./assets/images",
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + '-' + file.originalname)
+    }
+})
+const upload = multer({ storage: storage })
+
 
 // Route 1 for adding new product using POST (Admin auth required)
 
@@ -14,6 +26,7 @@ router.post('/api/addproduct', authenticateToken, [
     body('price', "price must be a number").isFloat(),
     body('description', "description must atlest have 3 characters").isLength({ min: 3 }),
     body('miscellaneous', "Specifications must be an object").isObject(),
+    body('imageurls', "imageurls must be an object").isArray()
 
 
 ], async (req, res) => {
@@ -30,6 +43,7 @@ router.post('/api/addproduct', authenticateToken, [
                 price: req.body.price,
                 description: req.body.description,
                 miscellaneous: req.body.miscellaneous,
+                images: req.body.imageurls
             }
         )
         res.status(200).send("Product saved sucessfully!");
@@ -154,4 +168,14 @@ router.delete('/api/removeprod', authenticateToken, async (req, res) => {
         res.status(500).send("Internal server error")
     }
 })
+
+// Route 6 for uploading images
+
+router.post('/api/uploadimg', upload.array("photo", 5), authenticateToken, (req, res) => {
+    let urlarr = req.files.map((fl) => { return "http://localhost:5000/images/" + fl.filename });
+    res.send({
+        urlarray: urlarr
+    })
+})
+
 module.exports = router

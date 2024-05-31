@@ -18,6 +18,7 @@ router.post('/api/signin', [
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
+                console.log(errors)
                 return res.status(400).send({ errors: "Enter valid Email" });
             }
             const chk_dup = await User.findOne({ email: req.body.email });
@@ -105,7 +106,7 @@ router.put('/api/edituser', authenticateToken, async (req, res) => {
 router.post('/api/fetchuserdata', authenticateToken, async (req, res) => {
     try {
         const user_id = req.data.id;
-        const user = await User.findOne({ _id: user_id }).select("-password");
+        const user = await User.findOne({ _id: user_id }).select("-password").select("-__v");
         res.send(user)
     } catch (error) {
 

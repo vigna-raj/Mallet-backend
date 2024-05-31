@@ -83,4 +83,17 @@ router.post('/api/vieworder', authenticateToken, async (req, res) => {
         res.status(500).send({ errors: "Internal Server Error" });
     }
 })
+// Route 4 Endpoint for fetching orders based on user id using POST(Login required)
+router.post('/api/viewbyuid', authenticateToken, async (req, res) => {
+    try {
+        const id = req.data.id;
+        const orders = await Orders.find({ userid: id });
+        let orderarray = orders.map((item) => { return item._id });
+        res.send(orderarray);
+    }
+    catch (err) {
+        console.log(err.message)
+        res.status(500).send({ errors: "Internal Server Error" });
+    }
+})
 module.exports = router

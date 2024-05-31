@@ -111,4 +111,18 @@ router.put('/api/updatecart', authenticateToken, [
     }
 })
 
+// Route 5 Endpoint for fetching Cart based on user id using POST(Login required)
+router.post('/api/viewbyuid', authenticateToken, async (req, res) => {
+    try {
+        const id = req.data.id;
+        const cart = await Cart.find({ userid: id });
+        let cartarray = cart.map((item) => { return item._id });
+        res.send(cartarray);
+    }
+    catch (err) {
+        console.log(err.message)
+        res.status(500).send({ errors: "Internal Server Error" });
+    }
+})
+
 module.exports = router
